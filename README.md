@@ -1,4 +1,4 @@
-# WorldDev-order-service
+# WorldDev Order Service
 Cloud Native Application for managing orders of worlddev's bookshop system
 
 ## _Functionalities_
@@ -11,7 +11,7 @@ Cloud Native Application for managing orders of worlddev's bookshop system
 * Java 17
 * Spring Framework 6
 * SpringBoot 3
-* Sping Cloud
+* Spring Cloud
 * Reactive Spring
 * Docker
 * Kubernetes
