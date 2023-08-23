@@ -10,6 +10,19 @@ sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
+	maven{ url 'https://repo.spring.io/snapshot' }
+}
+
+ext{
+	set('springCloudVersion', "2022.0.3-SNAPSHOT")
+	set('testcontainersVersion', "1.17.3")
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+	}
 }
 
 dependencies {
@@ -17,6 +30,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	implementation 'org.springframework.retry:spring-retry'
 	runtimeOnly 'org.postgresql:r2dbc-postgresql'
 	runtimeOnly 'org.springframework:spring-jdbc'
 	runtimeOnly 'org.postgresql:postgresql'
@@ -27,6 +42,19 @@ dependencies {
 	testImplementation 'org.testcontainers:junit-jupiter'
 	testImplementation 'org.testcontainers:postgresql'
 	testImplementation 'org.testcontainers:r2dbc'
+	testImplementation 'com.squareup.okhttp3:mockwebserver'
+}
+
+bootBuildImage{
+	imageName = "worlddev-".concat(rootProject.name)
+	environment = ["BP_JVM_VERSION":"17.*"]
+	docker {
+		publishRegistry{
+			username = project.findProperty("registryUsername")
+			password = project.findProperty("registryToken")
+			url = project.findProperty("registryUrl")
+		}
+	}
 }
 
 tasks.named('test') {
